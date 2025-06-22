@@ -177,7 +177,9 @@ class _ClipLogin19State extends State<ClipLogin19> {
                                     borderRadius: BorderRadius.circular(20)
                                 ),
                                 child: ElevatedButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Navigator.pushReplacementNamed(context, '/dashboard');
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(vertical: 5),
                                       shadowColor: Colors.transparent,
