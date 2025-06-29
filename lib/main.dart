@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fasy_hotel/view/clip_login_19.dart';
+import 'package:fasy_hotel/view/login.dart';
 import 'package:fasy_hotel/view/dashboard.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Fasy Hotel',
+      title: 'Aston Hotel',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Arial',

@@ -1,135 +1,118 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-
-// void main() {
-//   runApp(const MaterialApp(
-//     debugShowCheckedModeBanner: false,
-//     home: DashboardPage(),
-//   ));
-// }
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
+  // Fungsi logout
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.pushReplacementNamed(context, '/ClipLogin19');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Hello, Rachel 👋',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+      backgroundColor: const Color(0xFFF9FAFB),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        title: const Text("Fasy Hotel"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () => _logout(context),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Selamat Datang di Fasy Hotel 👋',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              "Temukan penginapan terbaik untuk Anda",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 30),
+            // Card Pencarian
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
               ),
-              const SizedBox(height: 4),
-              const Text(
-                "Let's find your cozy place to stay",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 30),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on_outlined, color: Colors.blue),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Komodo Island',
-                            ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on_outlined, color: Colors.blue),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Tujuan (contoh: Bali)',
                           ),
                         ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        const Icon(Icons.date_range_outlined, color: Colors.blue),
-                        const SizedBox(width: 10),
-                        const Text('20 - 25 May 2023'),
-                        const Spacer(),
-                        const Icon(Icons.person_outline, color: Colors.blue),
-                        const SizedBox(width: 6),
-                        const Text('3 person'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4B91F1),
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                      ),
+                    ],
                   ),
-                ),
-                child: const Text('Search', style: TextStyle(fontSize: 18)),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Popular cities',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  const Divider(),
+                  Row(
+                    children: const [
+                      Icon(Icons.date_range_outlined, color: Colors.blue),
+                      SizedBox(width: 10),
+                      Text('22 - 26 Juni 2025'),
+                      Spacer(),
+                      Icon(Icons.person_outline, color: Colors.blue),
+                      SizedBox(width: 6),
+                      Text('2 orang'),
+                    ],
                   ),
-                  Text('See all', style: TextStyle(color: Colors.blue)),
                 ],
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 80,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: const [
-                    CityChip(name: 'Paris'),
-                    CityChip(name: 'London'),
-                    CityChip(name: 'Bangkok'),
-                    CityChip(name: 'Rome'),
-                    CityChip(name: 'Jakarta'),
-                  ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4B91F1),
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: const Text('Cari Hotel', style: TextStyle(fontSize: 18)),
+            ),
+            const SizedBox(height: 30),
+            const Text(
+              'Populer',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 180,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: const [
-                  Text(
-                    'Favorite place to holiday',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text('See all', style: TextStyle(color: Colors.blue)),
+                  ImageCard(imagePath: 'https://i.imgur.com/OvMZBs9.jpeg'),
+                  ImageCard(imagePath: 'https://i.imgur.com/u3Yj0pA.jpeg'),
+                  ImageCard(imagePath: 'https://i.imgur.com/0sKxQpU.jpeg'),
                 ],
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 180,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ImageCard(imagePath: 'https://i.imgur.com/OvMZBs9.jpeg'),
-                    ImageCard(imagePath: 'https://i.imgur.com/u3Yj0pA.jpeg'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -137,30 +120,12 @@ class DashboardPage extends StatelessWidget {
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Orders'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Beranda'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Pesanan'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: 'Notifikasi'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profil'),
         ],
       ),
-    );
-  }
-}
-
-class CityChip extends StatelessWidget {
-  final String name;
-  const CityChip({super.key, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF0F0F0),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(name),
     );
   }
 }
