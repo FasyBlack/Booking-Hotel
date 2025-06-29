@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fasy_hotel/view/login.dart';
-import 'package:fasy_hotel/view/dashboard.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:fasy_hotel/view/user/user_dashboard.dart';
+import 'package:fasy_hotel/view/admin_dashboard.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Aston Hotel',
       theme: ThemeData(
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Arial',
       ),
       initialRoute: '/',
-      routes: {
-        '/': (context) => const ClipLogin19(),     // Halaman Login
-        '/dashboard': (context) => const DashboardPage(), // ganti nama class jika perlu
-      },
+      getPages: [
+        GetPage(name: '/', page: () => const ClipLogin19()),
+        GetPage(name: '/user_dashboard', page: () => UserDashboard()),
+        GetPage(name: '/admin_dashboard', page: () => AdminDashboard()),
+      ],
     );
   }
 }

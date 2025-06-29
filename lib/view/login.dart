@@ -1,7 +1,7 @@
 // import yang dibutuhkan
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:fasy_hotel/services/auth_service.dart';
+import 'package:fasy_hotel/service/auth_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 class ClipLogin19 extends StatefulWidget {
@@ -49,7 +49,7 @@ class _ClipLogin19State extends State<ClipLogin19> {
             ClipPath(
               clipper: MyClipper(),
               child: Image.asset(
-                'assets/images/aston.jpg',
+                'assets/aston.jpg',
                 width: screenSize.width,
                 height: screenSize.height,
                 fit: BoxFit.cover,
@@ -87,7 +87,7 @@ class _ClipLogin19State extends State<ClipLogin19> {
                           title: 'Login Berhasil',
                           desc: 'Selamat datang!',
                           btnOkOnPress: () => Navigator.pushReplacementNamed(
-                              context, '/dashboard'),
+                              context, '/user_dashboard'),
                         ).show();
                       } catch (e) {
                         AwesomeDialog(
