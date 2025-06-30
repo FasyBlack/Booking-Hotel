@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 import 'package:fasy_hotel/view/login.dart';
 import 'package:fasy_hotel/view/user/user_dashboard.dart';
-import 'package:fasy_hotel/view/admin_dashboard.dart';
-import 'package:get/get.dart';
+import 'package:fasy_hotel/view/admin/admin_dashboard.dart';
+import 'package:fasy_hotel/view/SplashScreen.dart'; // sesuaikan path-nya
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Aston Hotel',
+      title: 'Fasy Hotel',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Arial',
       ),
-      initialRoute: '/',
+      home: SplashScreen(), // tidak pakai const
       getPages: [
-        GetPage(name: '/', page: () => const ClipLogin19()),
+        GetPage(name: '/', page: () => ClipLogin19()),
         GetPage(name: '/user_dashboard', page: () => UserDashboard()),
         GetPage(name: '/admin_dashboard', page: () => AdminDashboard()),
       ],

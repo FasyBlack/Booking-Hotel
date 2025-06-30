@@ -1,24 +1,18 @@
-import 'package:fasy_hotel/view/user/HomeUserPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/dashboard_controller.dart';
-import 'room_list_page.dart';
-import 'booking_history_page.dart';
-import 'user_profile_page.dart';
+import '../../../controller/dashboard_controller.dart';
 import 'package:fasy_hotel/service/auth_service.dart';
-import 'package:fasy_hotel/controller/room_controller.dart';
+import 'package:fasy_hotel/view/admin/AddRoomPage.dart';
 
-class UserDashboard extends StatelessWidget {
+class AdminDashboard extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
   final AuthService authService = AuthService();
-  final RoomController roomController = Get.put(RoomController());
-
 
   final List<Widget> pages = [
-    HomeUserPage(),
-    RoomListPage(),
-    BookingHistoryPage(),
-    UserProfilePage(),
+    Center(child: Text("Admin Stats")),
+    AddRoomPage(),
+    Center(child: Text("Users")),
+    Center(child: Text("Logout")),
   ];
 
   @override
@@ -45,21 +39,12 @@ class UserDashboard extends StatelessWidget {
             unselectedItemColor: const Color.fromARGB(255, 112, 111, 111),
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-              ),
+                  icon: Icon(Icons.bar_chart), label: "Stats"),
               BottomNavigationBarItem(
-                icon: Icon(Icons.hotel),
-                label: "Rooms",
-              ),
+                  icon: Icon(Icons.meeting_room), label: "Rooms"),
               BottomNavigationBarItem(
-                icon: Icon(Icons.history),
-                label: "Booking",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: "Exit",
-              ),
+                  icon: Icon(Icons.people), label: "Users"),
+              BottomNavigationBarItem(icon: Icon(Icons.close), label: "Exit"),
             ],
           ),
         ));

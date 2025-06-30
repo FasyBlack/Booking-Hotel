@@ -1,39 +1,42 @@
+// room_service.dart
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import '../model/room_model.dart';
 
 class RoomService {
-  final String baseUrl = "http://localhost:8080";
+  final String baseUrl = 'http://10.219.45.207:8080'; // Sesuaikan dengan IP backend
 
-  Future<List<dynamic>> getAllRooms() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
-
-    final response = await http.get(
-      Uri.parse('$baseUrl/rooms/all-rooms'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+  /// Ambil semua kamar dari Spring Boot
+  Future<List<Room>> getRooms() async {
+    final response = await http.get(Uri.parse('$baseUrl/rooms/all-rooms'));
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final List<dynamic> body = json.decode(response.body);
+      return body.map((json) => Room.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load rooms');
+      throw Exception('Gagal mengambil data kamar. Status: \${response.statusCode}');
     }
   }
 
-  Future<List<dynamic>> getAvailableRooms(String checkIn, String checkOut, String type) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+  /// Tambah kamar (admin)
+  Future<void> addRoom({
+    required String roomType,
+    required String price,
+    required File imageFile,
+    required String token,
+  }) async {
+    final uri = Uri.parse('$baseUrl/rooms/add/new-room');
+    final request = http.MultipartRequest('POST', uri)
+      ..headers['Authorization'] = 'Bearer $token'
+      ..fields['roomType'] = roomType
+      ..fields['roomPrice'] = price
+      ..files.add(await http.MultipartFile.fromPath('photo', imageFile.path));
 
-    final response = await http.get(
-      Uri.parse('$baseUrl/rooms/available-rooms?checkInDate=$checkIn&checkOutDate=$checkOut&roomType=$type'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    final response = await request.send();
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load available rooms');
+    if (response.statusCode != 200) {
+      throw Exception('Gagal menambahkan kamar. Status: \${response.statusCode}');
     }
   }
 }

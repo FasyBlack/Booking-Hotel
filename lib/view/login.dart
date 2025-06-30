@@ -1,8 +1,8 @@
-// import yang dibutuhkan
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fasy_hotel/service/auth_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:get/get.dart';
 
 class ClipLogin19 extends StatefulWidget {
   const ClipLogin19({Key? key}) : super(key: key);
@@ -13,12 +13,10 @@ class ClipLogin19 extends StatefulWidget {
 
 class _ClipLogin19State extends State<ClipLogin19> {
   bool animate = false;
+  bool isLoading = false;
 
-  // Sign In Controllers
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
-
-  // Sign Up Controllers
   final signupFirstNameController = TextEditingController();
   final signupLastNameController = TextEditingController();
   final signupEmailController = TextEditingController();
@@ -55,9 +53,10 @@ class _ClipLogin19State extends State<ClipLogin19> {
                 fit: BoxFit.cover,
               ),
             ),
-            // SIGN IN
+
+            // LOGIN
             AnimatedPositioned(
-              duration: Duration(milliseconds: 700),
+              duration: const Duration(milliseconds: 700),
               top: animate ? -screenSize.height : 0,
               left: 40,
               child: _buildAuthCard(
@@ -70,8 +69,9 @@ class _ClipLogin19State extends State<ClipLogin19> {
                 ],
                 bottomWidget: Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildButton("Sign In", onTap: () async {
+                      setState(() => isLoading = true);
                       try {
                         final result = await authService.login(
                           loginEmailController.text.trim(),
@@ -80,16 +80,35 @@ class _ClipLogin19State extends State<ClipLogin19> {
                         loginEmailController.clear();
                         loginPasswordController.clear();
 
+                        final List<String> roles =
+                            List<String>.from(result['roles'] ?? []);
+                        print('Login berhasil. Roles: $roles');
+
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.success,
                           animType: AnimType.bottomSlide,
                           title: 'Login Berhasil',
                           desc: 'Selamat datang!',
-                          btnOkOnPress: () => Navigator.pushReplacementNamed(
-                              context, '/user_dashboard'),
+                          btnOkOnPress: () {
+                            if (roles.contains('ROLE_ADMIN')) {
+                              Get.offAllNamed('/admin_dashboard');
+                            } else if (roles.contains('ROLE_USER')) {
+                              Get.offAllNamed('/user_dashboard');
+                            } else {
+                              print('Role tidak dikenali: $roles');
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.warning,
+                                title: 'Role Tidak Dikenali',
+                                desc: 'Silakan hubungi admin sistem.',
+                                btnOkOnPress: () {},
+                              ).show();
+                            }
+                          },
                         ).show();
                       } catch (e) {
+                        print('Login error: $e');
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.error,
@@ -98,24 +117,27 @@ class _ClipLogin19State extends State<ClipLogin19> {
                           desc: 'Email atau password salah',
                           btnOkOnPress: () {},
                         ).show();
+                      } finally {
+                        setState(() => isLoading = false);
                       }
                     }),
-                    SizedBox(height: 10),
-                    Text("Don't have an account?",
+                    const SizedBox(height: 10),
+                    const Text("Don't have an account?",
                         style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () => setState(() => animate = true),
-                      child: Text("Register",
+                      child: const Text("Register",
                           style: TextStyle(color: Colors.white, fontSize: 20)),
                     ),
                   ],
                 ),
               ),
             ),
-            // SIGN UP
+
+            // REGISTER
             AnimatedPositioned(
-              duration: Duration(milliseconds: 700),
+              duration: const Duration(milliseconds: 700),
               top: animate ? 0 : screenSize.height,
               left: 40,
               child: _buildAuthCard(
@@ -132,8 +154,9 @@ class _ClipLogin19State extends State<ClipLogin19> {
                 ],
                 bottomWidget: Column(
                   children: [
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     _buildButton("Sign Up", onTap: () async {
+                      setState(() => isLoading = true);
                       try {
                         await authService.register(
                           signupFirstNameController.text.trim(),
@@ -151,6 +174,7 @@ class _ClipLogin19State extends State<ClipLogin19> {
                           btnOkOnPress: () => setState(() => animate = false),
                         ).show();
                       } catch (e) {
+                        print('Register error: $e');
                         AwesomeDialog(
                           context: context,
                           dialogType: DialogType.error,
@@ -159,21 +183,27 @@ class _ClipLogin19State extends State<ClipLogin19> {
                           desc: 'Coba Lagi',
                           btnOkOnPress: () {},
                         ).show();
+                      } finally {
+                        setState(() => isLoading = false);
                       }
                     }),
-                    SizedBox(height: 10),
-                    Text("Already Registered?",
+                    const SizedBox(height: 10),
+                    const Text("Already Registered?",
                         style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () => setState(() => animate = false),
-                      child: Text("Sign In",
+                      child: const Text("Sign In",
                           style: TextStyle(color: Colors.white, fontSize: 25)),
                     ),
                   ],
                 ),
               ),
             ),
+
+            if (isLoading)
+              const Center(
+                  child: CircularProgressIndicator(color: Colors.white)),
           ],
         ),
       ),
@@ -212,15 +242,15 @@ class _ClipLogin19State extends State<ClipLogin19> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(title,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 35,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ...fields,
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   bottomWidget,
                 ],
               ),
@@ -240,8 +270,9 @@ class _ClipLogin19State extends State<ClipLogin19> {
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.white),
         ),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
@@ -250,26 +281,27 @@ class _ClipLogin19State extends State<ClipLogin19> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 20, 24, 255).withOpacity(.5),
+        color: const Color.fromARGB(255, 20, 24, 255).withOpacity(.5),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 255, 255, 255).withOpacity(.5),
+            color: const Color.fromARGB(255, 255, 255, 255).withOpacity(.5),
             blurRadius: 15,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           )
         ],
       ),
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           shadowColor: Colors.transparent,
           backgroundColor: Colors.transparent,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
-        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 30)),
+        child: Text(text,
+            style: const TextStyle(color: Colors.white, fontSize: 30)),
       ),
     );
   }

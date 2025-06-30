@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final String baseUrl =
-      "http://192.168.1.11:8080/auth"; // Ganti sesuai IP lokal atau pakai 10.0.2.2 di emulator
+      "http://10.219.45.207:8080/auth"; // Ganti sesuai IP lokal atau pakai 10.0.2.2 di emulator
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
@@ -17,13 +17,17 @@ class AuthService {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         final token = body['token'];
-        final userEmail = body['email']; // ambil dari response body
+        final userEmail = body['email'];
+        final roles = body['roles']; // <- ambil role dari response
+        final role = roles[
+            0]; // ambil role pertama saja (biasanya ROLE_USER / ROLE_ADMIN)
 
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
-        await prefs.setString('email', userEmail); // ✅ simpan email juga
+        await prefs.setString('email', userEmail);
+        await prefs.setString('role', role); // ✅ simpan role
 
-        return body; // response berisi id, email, token, roles
+        return body;
       } else {
         throw Exception('Login gagal: ${response.body}');
       }
@@ -63,14 +67,14 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    await prefs.remove('email'); // hapus email juga saat logout
-  }
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear(); // lebih praktis
+}
 
-  /// Ambil email dari local storage
-  Future<String?> getEmail() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('email');
-  }
+
+  Future<String?> getRole() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('role');
+}
+
 }
