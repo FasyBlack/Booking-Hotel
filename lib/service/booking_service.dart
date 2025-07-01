@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingService {
-  final String baseUrl = "http://localhost:8080";
+  final String baseUrl = "http://192.168.1.10:8080";
 
   Future<List<dynamic>> getUserBookings(String email) async {
     final prefs = await SharedPreferences.getInstance();

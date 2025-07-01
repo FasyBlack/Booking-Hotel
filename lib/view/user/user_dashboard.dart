@@ -1,7 +1,7 @@
 import 'package:fasy_hotel/view/user/HomeUserPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/dashboard_controller.dart';
+import 'package:fasy_hotel/controller/dashboard_controller.dart';
 import 'room_list_page.dart';
 import 'booking_history_page.dart';
 import 'user_profile_page.dart';

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../service/room_service.dart';
+import 'package:fasy_hotel/service/room_service.dart';
 
 class AddRoomPage extends StatefulWidget {
   const AddRoomPage({super.key});

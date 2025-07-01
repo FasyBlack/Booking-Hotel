@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../service/user_service.dart';
-import '../../../service/room_service.dart';
-
+import 'package:fasy_hotel/model/room_model.dart';
+import 'package:fasy_hotel/service/user_service.dart';
+import 'package:fasy_hotel/service/room_service.dart';
 
 class HomeUserPage extends StatefulWidget {
   const HomeUserPage({super.key});
@@ -14,7 +14,7 @@ class HomeUserPage extends StatefulWidget {
 
 class _HomeUserPageState extends State<HomeUserPage> {
   String fullName = 'User';
-  List<Map<String, dynamic>> rooms = [];
+  List<Room> rooms = [];
   bool isLoading = true;
 
   final List<String> images = [
@@ -43,7 +43,7 @@ class _HomeUserPageState extends State<HomeUserPage> {
         });
       }
     } catch (e) {
-      print("❌ Gagal ambil nama user: $e");
+      print("Gagal ambil nama user: $e");
     }
   }
 
@@ -52,12 +52,12 @@ class _HomeUserPageState extends State<HomeUserPage> {
       final data = await RoomService().getRooms();
       if (mounted) {
         setState(() {
-          rooms = List<Map<String, dynamic>>.from(data);
+          rooms = data;
           isLoading = false;
         });
       }
     } catch (e) {
-      print("❌ Gagal fetch rooms: $e");
+      print("Gagal fetch rooms: $e");
       if (mounted) setState(() => isLoading = false);
     }
   }
@@ -73,16 +73,18 @@ class _HomeUserPageState extends State<HomeUserPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 // Header
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Selamat Datang,\n$fullName',
                         style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600),
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       Image.asset('assets/logo.png', width: 40),
                     ],
@@ -103,9 +105,9 @@ class _HomeUserPageState extends State<HomeUserPage> {
                 ),
 
                 const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
                     'Recomended',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -121,11 +123,12 @@ class _HomeUserPageState extends State<HomeUserPage> {
                           : ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: rooms.length,
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               itemBuilder: (context, index) {
                                 final room = rooms[index];
                                 try {
-                                  final imageBase64 = room['photo'];
+                                  final imageBase64 = room.photo ?? '';
                                   final imageBytes = base64Decode(imageBase64);
                                   return Container(
                                     width: 220,
@@ -136,11 +139,14 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                       ),
                                       elevation: 4,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           ClipRRect(
-                                            borderRadius: const BorderRadius.vertical(
-                                              top: Radius.circular(12)),
+                                            borderRadius:
+                                                const BorderRadius.vertical(
+                                                    top:
+                                                        Radius.circular(12)),
                                             child: Image.memory(
                                               imageBytes,
                                               height: 120,
@@ -151,7 +157,7 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              room['roomType'] ?? 'Tipe Tidak Diketahui',
+                                              room.roomType,
                                               style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -159,10 +165,13 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
                                             child: Text(
-                                              'Harga: Rp ${room['roomPrice'] ?? '-'}',
-                                              style: const TextStyle(fontSize: 14, color: Colors.grey),
+                                              'Harga: Rp ${room.roomPrice}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey),
                                             ),
                                           ),
                                         ],
@@ -170,7 +179,8 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                     ),
                                   );
                                 } catch (e) {
-                                  return const Text("❌ Gagal render gambar kamar.");
+                                  return const Text(
+                                      " Gagal render gambar kamar.");
                                 }
                               },
                             ),
@@ -216,7 +226,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
         setState(() {
           currentPage = nextPage;
         });
-        autoSlide(); // call again to repeat
+        autoSlide(); 
       }
     });
   }
@@ -253,7 +263,8 @@ class _ImageCarouselState extends State<ImageCarousel> {
               width: currentPage == index ? 12 : 8,
               height: 8,
               decoration: BoxDecoration(
-                color: currentPage == index ? Colors.blue : Colors.grey[400],
+                color:
+                    currentPage == index ? Colors.blue : Colors.grey[400],
                 borderRadius: BorderRadius.circular(4),
               ),
             );
@@ -263,4 +274,3 @@ class _ImageCarouselState extends State<ImageCarousel> {
     );
   }
 }
-

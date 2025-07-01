@@ -7,7 +7,7 @@ class BookingHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Riwayat Booking")),
-      body: Center(child: Text("Riwayat booking kamu akan tampil di sini")),
+      body: Center(child: Text("Riwayat booking kosong")),
     );
   }
 }

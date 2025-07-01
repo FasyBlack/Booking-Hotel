@@ -1,9 +1,8 @@
-// room_list_page.dart
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/room_controller.dart';
+import 'package:fasy_hotel/controller/room_controller.dart';
 
 class RoomListPage extends StatelessWidget {
   final RoomController controller = Get.find<RoomController>();
@@ -31,7 +30,7 @@ class RoomListPage extends StatelessWidget {
                 imageBytes = base64Decode(room.photo!);
               }
             } catch (e) {
-              print("\u274C Gagal decode gambar: \$e");
+              print("Gagal decode gambar: $e");
             }
 
             return Padding(
@@ -52,15 +51,15 @@ class RoomListPage extends StatelessWidget {
                   else
                     Container(
                       height: 200,
-                      color: Colors.grey[300],
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       child: const Center(child: Text("No Image")),
                     ),
 
                   const SizedBox(height: 12),
 
                   Text(
-                    (room.roomType ?? '').toUpperCase(),
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    room.roomType.toUpperCase(),
+                    style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 0, 0, 0)),
                   ),
 
                   const SizedBox(height: 4),
@@ -72,13 +71,13 @@ class RoomListPage extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
-                  Text("Harga: Rp \${room.roomPrice ?? '-'}"),
+                  Text("Harga: Rp ${room.roomPrice}"),
 
                   const SizedBox(height: 12),
 
                   Row(
                     children: const [
-                      Icon(Icons.check, color: Colors.brown),
+                      Icon(Icons.check, color: Color.fromARGB(255, 233, 134, 98)),
                       SizedBox(width: 6),
                       Text("AC, Wifi, Breakfast"),
                     ],
@@ -88,18 +87,21 @@ class RoomListPage extends StatelessWidget {
 
                   Row(
                     children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text("FIND OUT MORE"),
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: OutlinedButton(
+                      //     onPressed: () {},
+                      //     child: const Text("FIND OUT MORE"),
+                      //   ),
+                      // ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.brown),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 13, 150, 255)),
+                              
                           onPressed: () {},
-                          child: const Text("BOOK NOW"),
+                          child: const Text("BOOK NOW",
+                          style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ],

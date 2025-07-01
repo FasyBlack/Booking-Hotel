@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controller/dashboard_controller.dart';
+import 'package:fasy_hotel/controller/dashboard_controller.dart';
 import 'package:fasy_hotel/service/auth_service.dart';
 import 'package:fasy_hotel/view/admin/AddRoomPage.dart';
 

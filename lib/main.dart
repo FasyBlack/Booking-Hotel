@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:fasy_hotel/view/login.dart';
 import 'package:fasy_hotel/view/user/user_dashboard.dart';
 import 'package:fasy_hotel/view/admin/admin_dashboard.dart';
-import 'package:fasy_hotel/view/SplashScreen.dart'; // sesuaikan path-nya
+import 'package:fasy_hotel/view/SplashScreen.dart'; 
 
 
 void main() {
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Arial',
       ),
-      home: SplashScreen(), // tidak pakai const
+      home: SplashScreen(), 
       getPages: [
         GetPage(name: '/', page: () => ClipLogin19()),
         GetPage(name: '/user_dashboard', page: () => UserDashboard()),

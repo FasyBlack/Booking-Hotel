@@ -18,16 +18,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkLogin() async {
-    await Future.delayed(const Duration(seconds: 2)); // animasi splash
+    await Future.delayed(const Duration(seconds: 2)); 
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
-    final role = prefs.getString('role'); // pastikan ini disimpan saat login
+    final role = prefs.getString('role'); 
 
     if (token != null && role != null) {
       if (role == 'ROLE_ADMIN') {
-        Get.offAll(() => AdminDashboard()); // tanpa const
+        Get.offAll(() => AdminDashboard());
       } else if (role == 'ROLE_USER') {
-        Get.offAll(() => UserDashboard()); // tanpa const
+        Get.offAll(() => UserDashboard()); 
       } else {
         Get.offAll(() => ClipLogin19());
       }

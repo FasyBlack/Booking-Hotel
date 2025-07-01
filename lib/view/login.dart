@@ -47,7 +47,7 @@ class _ClipLogin19State extends State<ClipLogin19> {
             ClipPath(
               clipper: MyClipper(),
               child: Image.asset(
-                'assets/aston.jpg',
+                'assets/header.jpg',
                 width: screenSize.width,
                 height: screenSize.height,
                 fit: BoxFit.cover,

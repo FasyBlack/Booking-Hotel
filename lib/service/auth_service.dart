@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final String baseUrl =
-      "http://10.219.45.207:8080/auth"; // Ganti sesuai IP lokal atau pakai 10.0.2.2 di emulator
+      "http://192.168.1.10:8080/auth"; 
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
@@ -18,14 +18,14 @@ class AuthService {
         final body = jsonDecode(response.body);
         final token = body['token'];
         final userEmail = body['email'];
-        final roles = body['roles']; // <- ambil role dari response
+        final roles = body['roles']; 
         final role = roles[
-            0]; // ambil role pertama saja (biasanya ROLE_USER / ROLE_ADMIN)
+            0]; 
 
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
         await prefs.setString('email', userEmail);
-        await prefs.setString('role', role); // ✅ simpan role
+        await prefs.setString('role', role); 
 
         return body;
       } else {
@@ -60,7 +60,7 @@ class AuthService {
     }
   }
 
-  /// Ambil token JWT dari local storage
+  
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -68,7 +68,7 @@ class AuthService {
 
   Future<void> logout() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.clear(); // lebih praktis
+  await prefs.clear(); 
 }
 
 
